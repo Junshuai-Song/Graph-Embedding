@@ -4,6 +4,8 @@ swiss roll data的matlab实现
 LE算法的python实现
 ### IsoMap和LE小结
 《IsoMap与LE.pdf》
+### 尝试可视化了SimRank的一个Top10结构
+初步想通过LE来让Sim值相近的点降维后，在二维空间中也比较相近，之后可视化其相关连边可能更清楚一点；但后来发现，通过networkx包可视化的时候，如果只显示特定部分顶点和边，它会较好地将其它无关边扩展至周围，如simrank.png所示。
 
 
 ### 参考：
