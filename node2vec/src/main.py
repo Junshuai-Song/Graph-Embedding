@@ -20,10 +20,10 @@ from gensim.models import Word2Vec
 def parse_args():
     parser = argparse.ArgumentParser(description="Run node2vec.")
 
-    parser.add_argument('--input', nargs='?', default='../../data/BlogCatalog-dataset/data/edges.csv',
+    parser.add_argument('--input', nargs='?', default='../../data/BlogCatalog-dataset/data/edges.txt',
                         help='Input graph path')
 
-    parser.add_argument('--groups', nargs='?', default='../../data/BlogCatalog-dataset/data/group-edges.csv',
+    parser.add_argument('--groups', nargs='?', default='../../data/BlogCatalog-dataset/data/group-edges.txt',
                         help='Input graph path')
 
     parser.add_argument('--output', nargs='?', default='../emb/blog.emb',
@@ -32,7 +32,7 @@ def parse_args():
     parser.add_argument('--dimensions', type=int, default=128,
                         help='Number of dimensions. Default is 128.')
 
-    parser.add_argument('--walk-length', type=int, default=5,
+    parser.add_argument('--walk-length', type=int, default=3,
                         help='Length of walk per source. Default is 80.')
 
     parser.add_argument('--num-walks', type=int, default=1,
@@ -64,8 +64,8 @@ def parse_args():
     parser.add_argument('--directed', dest='directed', action='store_true',
                         help='Graph is (un)directed. Default is undirected.')
     parser.add_argument('--undirected', dest='undirected', action='store_false')
-    # parser.set_defaults(directed=False)
-    parser.set_defaults(directed=True)
+    parser.set_defaults(directed=False)
+    # parser.set_defaults(directed=True)
 
     return parser.parse_args()
 

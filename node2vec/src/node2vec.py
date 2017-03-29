@@ -49,7 +49,11 @@ class Graph():
         for walk_iter in range(num_walks):
             print(str(walk_iter+1), '/', str(num_walks))
             random.shuffle(nodes)
+            num = 0
             for node in nodes:
+                num += 1
+                if num%100==0:
+                    print("node ", num)
                 walks.append(self.node2vec_walk(walk_length=walk_length, start_node=node))
 
         return walks
