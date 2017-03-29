@@ -7,6 +7,9 @@ import networkx as nx
 import random
 
 # Auther: Alan
+"""
+
+"""
 
 class DeepSim:
     topK = 200  # 记录每个顶点topK相似的顶点sim值
