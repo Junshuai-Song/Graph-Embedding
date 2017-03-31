@@ -1,7 +1,7 @@
 from sklearn import linear_model
 import numpy as np
 
-def get_groups(groups_path):
+def get_groups(args):
     """
     获得处理好的顶点类别分组
     :param groups_path: 
@@ -31,7 +31,7 @@ def get_groups(groups_path):
     """
     return groups, labels
 
-def get_data(label, num, model, groups):
+def get_data(label, num, embeddings, groups):
     """
     为了保证均匀性，对于每个1/10小组中的数据，我们选择
     :param label: 当前使用的类别label
@@ -43,15 +43,15 @@ def get_data(label, num, model, groups):
     X_0 = []
     Y_1 = []
     Y_0 = []
-    for key in model.wv:
+    for key in embeddings:
         # print(key)
 
         if label in groups[key]:    # 01分类
             Y_1.append(1)
-            X_1.append(model.wv[key])
+            X_1.append(embeddings[key])
         else:
             Y_0.append(0)
-            X_0.append(model.wv[key])
+            X_0.append(embeddings[key])
 
     # 之后在两者中将其分为num（10）份
     X = []
@@ -91,18 +91,40 @@ def get_split(k, num, X, Y):
 
     return train_X,train_Y,test_X,test_Y
 
-def classification(groups_path, model):
+
+def read_embedding(args):
+    """
+    从node2vec中生成的文件中读取embedding
+    :param args: 
+    :return: 
+    """
+    with open(args.output) as f :
+        lines = f.readlines()
+        num = int(lines[0].split(" ")[0])
+        dimension = int(lines[0].split(" ")[1])
+        lines = lines[1:]
+        embeddings = {}
+        for line in lines:
+            words = line.split(" ")
+            embedding = []
+            for j in range(1, len(words)):
+                embedding.append(float(words[j]))
+            embeddings[words[0]] = embedding
+    return embeddings
+
+def classification(args):
     """
     利用输入参数中顶点参数：
     :param groups_path: groups_path 顶点类别文件, model, 生成的每个单词的词向量 
     :param model: 每个顶点的维度向量，由word2vec得来
     :return: None
     """
-    groups,groups_labels = get_groups(groups_path)
+    embeddings = read_embedding(args)
+    groups,groups_labels = get_groups(args)
     num = 10
     for label in groups_labels:
         # 把样本按照类别i分成10分
-        X, Y = get_data(label, 10, model, groups)
+        X, Y = get_data(label, 10, embeddings, groups)
         for i in range(num):
             train_X,train_Y,test_X,test_Y = get_split(i,10,X,Y)
             clf = linear_model.LogisticRegression(solver='sag', max_iter=100, random_state=42,multi_class="multinomial").fit(train_X, train_Y)
