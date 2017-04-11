@@ -17,7 +17,7 @@ from gensim.models import Word2Vec
 
 
 
-def parse_args():
+def parse_args(p,q):
     parser = argparse.ArgumentParser(description="Run node2vec.")
 
     # parser.add_argument('--input', nargs='?', default='../graph/karate.edgelist',
@@ -27,7 +27,7 @@ def parse_args():
 
     parser.add_argument('--input', nargs='?', default='../../data/BlogCatalog-dataset/data/edges.txt',
                         help='Input graph path')
-    parser.add_argument('--output', nargs='?', default='../../data/BlogCatalog-dataset/data/blog.emb', help='Embeddings path')
+    parser.add_argument('--output', nargs='?', default='../../data/BlogCatalog-dataset/data/blog_'+str(p)+'_'+str(q)+'.emb', help='Embeddings path')
 
     parser.add_argument('--groups', nargs='?', default='../../data/BlogCatalog-dataset/data/group-edges.txt',
                         help='Input graph path')
@@ -50,10 +50,10 @@ def parse_args():
     parser.add_argument('--workers', type=int, default=8,
                         help='Number of parallel workers. Default is 8.')
 
-    parser.add_argument('--p', type=float, default=1,
+    parser.add_argument('--p', type=float, default=p,
                         help='Return hyperparameter. Default is 1.')
 
-    parser.add_argument('--q', type=float, default=2,   # similar with BFS style strategy.
+    parser.add_argument('--q', type=float, default=q,   # similar with BFS style strategy.
                         help='Inout hyperparameter. Default is 1.')
 
     parser.add_argument('--delimiter', type=str, default=',',
@@ -96,6 +96,7 @@ def learn_embeddings(walks):
     walks = [list(map(str, walk)) for walk in walks]
     model = Word2Vec(walks, size=args.dimensions, window=args.window_size, min_count=0, sg=1, workers=args.workers, iter=args.iter)
     model.wv.save_word2vec_format(args.output)
+    print("Save.")
 
     return model
 
@@ -114,8 +115,16 @@ def main(args):
 
 
 if __name__ == "__main__":
-    args = parse_args()
+    """
+    ps = [0.25, 0.5, 1.0, 2.0, 4.0]
+    qs = [0.25, 0.5, 1.0, 2.0, 4.0]
+    for p in ps:
+        for q in qs:
+    """
+    p = q = 0.25
+    args = parse_args(p,q)
     # model = main(args)
-    classify.classification(args)
+    # classify.classification(args)
+    classify.scoring(args)
 
 
