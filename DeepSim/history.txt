@@ -1,0 +1,1 @@
+1.	拿路径 + SimRank值---Java2.	Tensorflow，使用路径（+SimRank值）计算Embedding；3.	测试分类任务：sk-learn中LR。

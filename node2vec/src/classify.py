@@ -185,6 +185,7 @@ def scoring(args):
     A = mat['network']
     graph = sparse2graph(A)
     labels_matrix = mat['group']
+    print(labels_matrix)
     print("type(labels):", type(labels_matrix))             #type(labels): <class 'scipy.sparse.csc.csc_matrix'>
     print(labels_matrix.shape)
     # Map nodes to their features (note:  assumes nodes are labeled as integers 1:N)

@@ -15,10 +15,11 @@ class DeepSim:
     topK = 200  # 记录每个顶点topK相似的顶点sim值
 
 
-    def __init__(self, args, groups):
+    def __init__(self, args, X, Y):
         self.args = args
         self.read_graph()
-        self.groups = groups
+        self.X = X
+        self.Y = Y
 
 
     def read_graph(self):
@@ -113,14 +114,12 @@ class DeepSim:
         使用神经网络进行训练，同时使用SimRank进行目标低维表达的指导(放在最后一层，把原来的[0,0,...0,1,0,0] -> [simrank value])
         :return: 
         """
-        walks = self.random_walk()
-        # simrank = self.calculate_simrank_random();
-        simrank = self.calculate_simrank_all()
-        # 使用Walks和SimRank获得训练数据，其中将Y
-        Xtrain, ytrain = self.get_data(walks, simrank)
+
+        Xtrain, ytrain = self.X, self.Y
+
 
         # 下面构建神经网络
-        middle = 128
+        middle = self.args.dimensions   # 128维
         learning_rates = [0.001]
         minibatchs = [128]
 
@@ -180,35 +179,71 @@ class DeepSim:
                 sess.close()
 
         # 这里保存成文件，不然每次都要重新训练，消耗太大
+        # with open("") as f:
+
+        print("Save Embeddings.")
         return embeddings
 
-def test(embedding, labels):
+
+
+
+def get_input_output(args, simrank, walks):
     """
-    使用降维后的特征，在不同比例上进行有监督学习，模型使用Logistic Regression
-    :param embedding: 各个顶点特征
-    :param labels: 各个顶点labels
+    从simrank和walks获取全部的输入、输出样本数据
     :return: 
     """
-    num = len(embedding)
+    inputs = []
+    outputs = []
+    k = args.window_size
+    for walk in walks:
+        for i in range(k, len(walk)-k):
+            # x
+            x = []
+            for j in range(args.vertex_num):
+                if j==walk[i]:
+                    x.append(1)
+                else:
+                    x.append(0)
+            inputs.append(x)
 
-    accuracy = 0.8
+            # y
+            output = walk[i-k:i+k+1]
+            output_ = []
+            for j in output:
+                output_.append(simrank[walk[i]][output[j]])
+            # 使用output & output_ 构造一个|V|维的向量，使得output位置上的值为output_中保存的simrank值
+            y = []
+            for j in range(args.vertex_num):
+                if j in output:
+                    t = 0
+                    for m in output:
+                        if j==output[m]:
+                            t=m
+                            break
+                    y.append(output_[t])
+                else:
+                    y.append(0)
+            outputs.append(y)
 
-    return accuracy
+    return inputs,outputs
 
-def main(args, groups):
+
+def main(args, simrank, walks):
     """
     Design a new neutral network to deal with the classification task on graphs.
+    参数包含simrank值以及对应walks，需要按照simrank值将对应walks处理为全部的input和output数据，之后保存为文件，喂给神经网络
     :param args: 
     :param simrank: 
     :param groups: 
     :return: 
     """
+    X, Y = get_input_output(args, simrank, walks)
     print("DeepSim begin.")
-    deepSim = DeepSim(args, groups)
+    deepSim = DeepSim(args, X, Y)
     # 获取embedding
-    embedding, groups = deepSim.deepSim()
-    # 使用降维后的特征，在不同比例上进行有监督学习
-    test(embedding, groups)
+    deepSim.deepSim()   # embedding 需要被保存在args中声明的文件中
+
+
 
 
 
