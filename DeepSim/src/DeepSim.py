@@ -149,7 +149,7 @@ class DeepSim:
             # 真实值
             y_ = tf.placeholder(tf.float32, [None, length])
             cross_entropy = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(logits=y, labels=y_))
-            reg = tf.nn.l2_loss(w1)
+            reg = tf.nn.l2_loss(w1) + tf.nn.l2_loss(w2)
             loss = cross_entropy + 1e-1*reg
 
             train_step = tf.train.AdamOptimizer(learning_rate).minimize(loss)  # 学习率
@@ -164,7 +164,7 @@ class DeepSim:
                 sess = tf.Session()
                 sess.run(init_op)
                 # iterate
-                for i in range((int)(200000)):
+                for i in range((int)(20000)):
                     ss = random.sample([k for k in range(Xtrain.shape[0])], minibatch)
                     batch_xs = [Xtrain[k] for k in ss]
                     batch_ys = [ytrain[k] for k in ss]
@@ -173,8 +173,8 @@ class DeepSim:
 
                     if i % 1000 == 0:  # 验证集测试
                         # print(sess.run(cross_entropy,feed_dict={x: XCV, y_: yCV}))
-                        print("step %d, cross_entropy: %g, L2_norm: %g " % (i, sess.run(cross_entropy, feed_dict={x: Xtrain, y_: ytrain}), sess.run(reg, feed_dict={x: Xtrain, y_: ytrain})))
-                        print("step %d, loss: %g" % (i, sess.run(loss, feed_dict={x: Xtrain, y_: ytrain})))
+                        print("step %d, train cross_entropy: %g, train L2_norm: %g " % (i, sess.run(cross_entropy, feed_dict={x: Xtrain, y_: ytrain}), sess.run(reg, feed_dict={x: Xtrain, y_: ytrain})))
+                        print("step %d, train loss: %g" % (i, sess.run(loss, feed_dict={x: Xtrain, y_: ytrain})))
                 embeddings.append(sess.run(embedding, feed_dict={x: Xtrain}))
                 sess.close()
 
@@ -209,8 +209,18 @@ def get_input_output(args, simrank, walks):
             # y
             output = walk[i-k:i+k+1]
             output_ = []
+            # 这里时间复杂度略高，证实想法后再优化
             for j in output:
-                output_.append(simrank[walk[i]][output[j]])
+                flag = 0
+                for sim in simrank[walk[i]]:
+                    if j == sim[0]:
+                        flag=1
+                        output_.append(sim[1])
+                        break
+                if flag==0:
+                    output_.append(0.0)
+                # output_.append(simrank[walk[i]][output[j]])
+
             # 使用output & output_ 构造一个|V|维的向量，使得output位置上的值为output_中保存的simrank值
             y = []
             for j in range(args.vertex_num):
@@ -220,13 +230,28 @@ def get_input_output(args, simrank, walks):
                         if j==output[m]:
                             t=m
                             break
-                    y.append(output_[t])
+                    y.append(float(output_[t]))
                 else:
-                    y.append(0)
+                    y.append(0.0)
             outputs.append(y)
 
     return inputs,outputs
 
+
+def save_embeddings(file_path, embeddings):
+    """
+    在文件file_path中保存embeddings（避免测试中重复训练）
+    :param file_path: 
+    :param embeddings: 
+    :return: 
+    """
+    with open(file_path, "w") as f:
+        for embedding in embeddings:
+            for t in embedding:
+                f.write(t)
+                f.write("\t")
+            f.write("\n")
+    print("save embeddings.")
 
 def main(args, simrank, walks):
     """
@@ -237,12 +262,14 @@ def main(args, simrank, walks):
     :param groups: 
     :return: 
     """
+    print("DeepSim get X/Y")
     X, Y = get_input_output(args, simrank, walks)
-    print("DeepSim begin.")
+    print("DeepSim init.")
     deepSim = DeepSim(args, X, Y)
-    # 获取embedding
-    deepSim.deepSim()   # embedding 需要被保存在args中声明的文件中
-
+    print("DeepSim train begin.")
+    embeddings = deepSim.deepSim()   # embedding 需要被保存在args中声明的文件中
+    print("type(embeddings): ", type(embeddings))
+    save_embeddings(args.emb_output, embeddings)
 
 
 

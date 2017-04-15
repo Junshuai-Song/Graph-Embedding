@@ -74,7 +74,7 @@ public class Print {
 				out.append(MyConfiguration.SEPARATOR + p.getKey());
 				outsim.append(MyConfiguration.SEPARATOR + p.getKey()
 						+ MyConfiguration.SEPARATOR_KV
-						+ String.format("%.7f", p.getValue()));
+						+ String.format("%.3f", p.getValue()));
 			}
 			out.append("\r\n");
 			outsim.append("\r\n");

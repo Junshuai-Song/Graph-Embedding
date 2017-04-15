@@ -22,13 +22,13 @@ def parse_args():
     parser.add_argument('--input', nargs='?', default='../../data/BlogCatalog-dataset/data/edges.txt',
                         help='Input graph path')
 
-    parser.add_argument('--simrank_path', nargs='?', default='../../data/BlogCatalog-dataset/data/blog_simrank.txt.sim.txt',
+    parser.add_argument('--simrank_path', nargs='?', default='../../data/BlogCatalog-dataset/data/blog_simrank_navie_top20.txt.sim.txt',
                         help='Input graph path')
 
     parser.add_argument('--groups', nargs='?', default='../../data/BlogCatalog-dataset/data/group-edges.csv',
                         help='Input graph path')
 
-    parser.add_argument('--output', nargs='?', default='../emb/blog.emb',
+    parser.add_argument('--emb_output', nargs='?', default='../emb/blog.emb',
                         help='Embeddings path')
 
     parser.add_argument('--TOPK', default=1000, type=int,
@@ -40,25 +40,25 @@ def parse_args():
     parser.add_argument('--dimensions', type=int, default=128,
                         help='Number of dimensions. Default is 128.')
 
-    parser.add_argument('--walk-length', type=int, default=80,
+    parser.add_argument('--walk-length', type=int, default=8,
                         help='Length of walk per source. Default is 80.')
 
-    parser.add_argument('--num-walks', type=int, default=10,
+    parser.add_argument('--num-walks', type=int, default=1,
                         help='Number of walks per source. Default is 10.')
 
-    parser.add_argument('--window-size', type=int, default=10,
+    parser.add_argument('--window-size', type=int, default=2,
                         help='Context size for optimization. Default is 10.')
 
-    parser.add_argument('--iter', default=10, type=int,
+    parser.add_argument('--iter', default=2, type=int,
                         help='Number of epochs in SGD')
 
     parser.add_argument('--workers', type=int, default=8,
                         help='Number of parallel workers. Default is 8.')
 
-    parser.add_argument('--p', type=float, default=1,
+    parser.add_argument('--p', type=float, default=0.25,
                         help='Return hyperparameter. Default is 1.')
 
-    parser.add_argument('--q', type=float, default=2,   # similar with BFS style strategy.
+    parser.add_argument('--q', type=float, default=0.25,   # similar with BFS style strategy.
                         help='Inout hyperparameter. Default is 1.')
 
     parser.add_argument('--delimiter', type=str, default=',',
@@ -72,13 +72,18 @@ def parse_args():
     parser.add_argument('--directed', dest='directed', action='store_true',
                         help='Graph is (un)directed. Default is undirected.')
     parser.add_argument('--undirected', dest='undirected', action='store_false')
-    # parser.set_defaults(directed=False)
-    parser.set_defaults(directed=True)
+    parser.set_defaults(directed=False)
+    # parser.set_defaults(directed=True)
 
     return parser.parse_args()
 
 
 def read_simrank(args):
+    """
+    输入的simrank值已经是排好序的
+    :param args: 
+    :return: 返回全部顶点的simrank值，如果当前点没有很相似的顶点，那么当前顶点列表为空
+    """
     simrank = []
     with open(args.simrank_path) as f:
         lines = f.readlines()
@@ -95,7 +100,7 @@ def read_simrank(args):
                 if float(ts[1]) <= 0.000001:
                     continue
                 else:
-                    sim.append(ts[0])
+                    sim.append((ts[0], ts[1]))
             simrank.append(sim)
     return simrank
 
@@ -216,12 +221,34 @@ def get_walks(args):
     """
 	Pipeline for representational learning for all nodes in a graph.
 	"""
+    print("read graoh...")
     nx_G = read_graph()  # 利用networkx包读取Graph信息
     G = node2vec.Graph(nx_G, args.directed, args.p, args.q)  # 使用node2vec中的公式进行一下处理
+    print("preprocess transition probs...")
     G.preprocess_transition_probs()  # 计算新的概率
     # 这里计算完毕，是返回一系列walks的路径，这些路径中允许出现重复点，例如：0->1->5->4->7->1->4 等
+    print("begin walks...")
     walks = G.simulate_walks(args.num_walks, args.walk_length)
     # model = learn_embeddings(walks)
+    return walks
+
+def save_list(walks,file_path):
+    with open(file_path, "w") as f:
+        for walk in walks:
+            for t in walk:
+                f.write(str(t))
+                f.write("\t")
+            f.write("\n")
+
+def read_list(file_path):
+    walks = []
+    with open(file_path, "r") as f:
+        lines = f.readlines()
+        for line in lines:
+            line = line.strip()
+            words = line.split("\t")
+            line = [w for w in words]
+            walks.append(line)
     return walks
 
 
@@ -229,10 +256,19 @@ if __name__ == "__main__":
     args = parse_args()
     # average_acc, simrank, groups = preprocess_simrank(args)
     # average_acc = preprocess_edges(args)
+    print("read simrank...")
     simrank = read_simrank(args)
     walks = get_walks(args)
+    save_list(walks,"./walks.txt")
+    walks = read_list("./walks.txt")    # 其中保存的是字符串
+    print(walks)
+
+    print("deal with input/output...")
     DeepSim.main(args, simrank, walks)  # 获得通过DeepSim处理后的embedding（传入游走的walks，以及对应simrank值矩阵），作用类似node2vec
-    classify.scoring(args)      # 按照特定路径读取embedding以及groups分组，进行监督分类，测试embedding在任务上的效果。
+
+    # 读取embeddings，
+    embeddings = read_list(args.emb_output)
+    classify.scoring(args, embeddings)      # 按照特定路径读取embedding以及groups分组，进行监督分类，测试embedding在任务上的效果。
 
 
 

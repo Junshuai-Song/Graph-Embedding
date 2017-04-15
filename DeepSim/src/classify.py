@@ -170,15 +170,15 @@ def sparse2graph(x):
         G[i].add(j)
     return {str(k): [str(x) for x in v] for k,v in G.items()}
 
-def scoring(args):
+def scoring(args, embeddings):
 
     # 0. Files
     embeddings_file = '../../data/BlogCatalog-dataset/data/blog_'+str(0.25)+'_'+str(0.25)+'.emb'
     matfile = "blogcatalog.mat"
 
     # 1. Load Embeddings
-    #model = Word2Vec.load_word2vec_format(embeddings_file)
-    model = gensim.models.KeyedVectors.load_word2vec_format(embeddings_file)
+    # model = gensim.models.KeyedVectors.load_word2vec_format(embeddings_file)
+    model = embeddings
 
     # 2. Load labels
     mat = loadmat(matfile)
