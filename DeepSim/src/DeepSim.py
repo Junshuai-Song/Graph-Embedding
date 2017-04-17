@@ -148,7 +148,8 @@ class DeepSim:
             y_ = tf.placeholder(tf.float32, [None, length])
             cross_entropy = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(logits=y, labels=y_))
             reg = tf.nn.l2_loss(w1) + tf.nn.l2_loss(w2)
-            loss = cross_entropy + 1e-4*reg
+            #loss = cross_entropy + 1e-3*reg
+            loss = cross_entropy
 
             train_step = tf.train.AdamOptimizer(learning_rate).minimize(loss)  # 学习率
             init_op = tf.global_variables_initializer()
@@ -164,7 +165,7 @@ class DeepSim:
                 # iterate
                 Xtrain, ytrain = get_batch(self.args, self.simrank, self.walks, minibatch * 100, self.tem_simrank)  # 找一个大点的数据集测试效果
 
-                for i in range((int)(20000)):
+                for i in range((int)(50000)):
                     print("iter:", i)
                     batch_xs, batch_ys = get_batch(self.args, self.simrank, self.walks, minibatch, self.tem_simrank)
 
@@ -174,12 +175,14 @@ class DeepSim:
 
                     sess.run(train_step, feed_dict={x: batch_xs, y_: batch_ys})
 
-                    if i % 100 == 0:  # 验证集测试
+                    if i % 1 == 0:  # 验证集测试
                         # print(sess.run(cross_entropy,feed_dict={x: XCV, y_: yCV}))
                         print("step %d, train cross_entropy: %g, train L2_norm: %g " % (i, sess.run(cross_entropy, feed_dict={x: Xtrain, y_: ytrain}), sess.run(reg, feed_dict={x: Xtrain, y_: ytrain})))
                         print("step %d, train loss: %g" % (i, sess.run(loss, feed_dict={x: Xtrain, y_: ytrain})))
                     if i % 1000==0:
                         # 没到1000轮，保存一次embedding！
+                        embeddings = sess.run([w1])
+                        embeddings = embeddings[0]
                         save_embeddings(self.args.emb_output+str(i), embeddings)
 
                 # 保存权重作为embeddings
