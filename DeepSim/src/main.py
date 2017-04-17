@@ -10,23 +10,25 @@ import DeepSim
 import numpy as np
 import classify
 import node2vec
-
+from gensim.models import Word2Vec
+import gensim
+import time
 
 
 def parse_args():
     parser = argparse.ArgumentParser(description="Run DeepSim.")
 
-    parser.add_argument('--base_path', nargs='?', default='../../data/BlogCatalog-dataset/data/',
-                        help='Input graph path')
+    # parser.add_argument('--base_path', nargs='?', default='../../data/BlogCatalog-dataset/data/',
+    #                     help='Input graph path')
 
     parser.add_argument('--input', nargs='?', default='../../data/BlogCatalog-dataset/data/edges.txt',
                         help='Input graph path')
 
-    parser.add_argument('--simrank_path', nargs='?', default='../../data/BlogCatalog-dataset/data/blog_simrank_navie_top20.txt.sim.txt',
+    parser.add_argument('--simrank_path', nargs='?', default='../output_u_u/SimRank/blog_simrank_navie_top20.txt.sim.txt',
                         help='Input graph path')
 
-    parser.add_argument('--groups', nargs='?', default='../../data/BlogCatalog-dataset/data/group-edges.csv',
-                        help='Input graph path')
+    # parser.add_argument('--groups', nargs='?', default='../../data/BlogCatalog-dataset/data/group-edges.csv',
+    #                     help='Input graph path')
 
     parser.add_argument('--emb_output', nargs='?', default='../emb/blog.emb',
                         help='Embeddings path')
@@ -34,22 +36,22 @@ def parse_args():
     parser.add_argument('--TOPK', default=1000, type=int,
                         help='Top K')
 
-    parser.add_argument('--vertex-num', type=int, default=10312,
+    parser.add_argument('--vertex-num', type=int, default=10313,
                         help='Number of vertex.')
 
     parser.add_argument('--dimensions', type=int, default=128,
                         help='Number of dimensions. Default is 128.')
 
-    parser.add_argument('--walk-length', type=int, default=8,
+    parser.add_argument('--walk-length', type=int, default=80,
                         help='Length of walk per source. Default is 80.')
 
-    parser.add_argument('--num-walks', type=int, default=1,
+    parser.add_argument('--num-walks', type=int, default=10,
                         help='Number of walks per source. Default is 10.')
 
-    parser.add_argument('--window-size', type=int, default=2,
+    parser.add_argument('--window-size', type=int, default=10,
                         help='Context size for optimization. Default is 10.')
 
-    parser.add_argument('--iter', default=2, type=int,
+    parser.add_argument('--iter', default=10, type=int,
                         help='Number of epochs in SGD')
 
     parser.add_argument('--workers', type=int, default=8,
@@ -97,7 +99,7 @@ def read_simrank(args):
                     words[i] = words[i][:-1]
                 ts = words[i].split(":")
                 # print(i,words[i],ts)
-                if float(ts[1]) <= 0.000001:
+                if float(ts[1]) <= 0.00000001:
                     continue
                 else:
                     sim.append((ts[0], ts[1]))
@@ -252,24 +254,40 @@ def read_list(file_path):
     return walks
 
 
+def print_time(start):
+    end = time.clock()
+    print('Running time: %s Seconds' % (end - start))
+
+
 if __name__ == "__main__":
+    start = time.clock()
+    print_time(start)
+
     args = parse_args()
     # average_acc, simrank, groups = preprocess_simrank(args)
     # average_acc = preprocess_edges(args)
+
     print("read simrank...")
     simrank = read_simrank(args)
-    walks = get_walks(args)
-    save_list(walks,"./walks.txt")
+    # print_time(start)
+    # print(simrank[1])
+    # walks = get_walks(args)
+    # print_time(start)
+    # save_list(walks,"./walks.txt")
+    print("read walks...")
     walks = read_list("./walks.txt")    # 其中保存的是字符串
-    print(walks)
-
+    # print(walks)
     print("deal with input/output...")
+    print_time(start)
     DeepSim.main(args, simrank, walks)  # 获得通过DeepSim处理后的embedding（传入游走的walks，以及对应simrank值矩阵），作用类似node2vec
+    print_time(start)
 
     # 读取embeddings，
-    embeddings = read_list(args.emb_output)
+    print_time(start)
+    embeddings = gensim.models.KeyedVectors.load_word2vec_format(args.emb_output)
+    print_time(start)
     classify.scoring(args, embeddings)      # 按照特定路径读取embedding以及groups分组，进行监督分类，测试embedding在任务上的效果。
-
+    print_time(start)
 
 
 

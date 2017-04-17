@@ -173,11 +173,9 @@ def sparse2graph(x):
 def scoring(args, embeddings):
 
     # 0. Files
-    embeddings_file = '../../data/BlogCatalog-dataset/data/blog_'+str(0.25)+'_'+str(0.25)+'.emb'
     matfile = "blogcatalog.mat"
 
     # 1. Load Embeddings
-    # model = gensim.models.KeyedVectors.load_word2vec_format(embeddings_file)
     model = embeddings
 
     # 2. Load labels
@@ -185,7 +183,7 @@ def scoring(args, embeddings):
     A = mat['network']
     graph = sparse2graph(A)
     labels_matrix = mat['group']
-    print(labels_matrix)
+    # print(labels_matrix)
     print("type(labels):", type(labels_matrix))             #type(labels): <class 'scipy.sparse.csc.csc_matrix'>
     print(labels_matrix.shape)
     # Map nodes to their features (note:  assumes nodes are labeled as integers 1:N)
@@ -243,7 +241,7 @@ def scoring(args, embeddings):
             averages = ["micro", "macro"]
             for average in averages:
                 results[average] = f1_score(y_test, preds, average=average)
-                print(results[average])
+                # print("===", results[average])
             all_results[train_percent].append(results)
 
     print('Results, using embeddings of dimensionality', X.shape[1])

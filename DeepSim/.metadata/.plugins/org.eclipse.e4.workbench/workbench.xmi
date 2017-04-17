@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ASCII"?>
 <application:Application xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:advanced="http://www.eclipse.org/ui/2010/UIModel/application/ui/advanced" xmlns:application="http://www.eclipse.org/ui/2010/UIModel/application" xmlns:basic="http://www.eclipse.org/ui/2010/UIModel/application/ui/basic" xmlns:menu="http://www.eclipse.org/ui/2010/UIModel/application/ui/menu" xmi:id="_D34bERlFEeeZcLa-sysB1g" elementId="org.eclipse.e4.legacy.ide.application" contributorURI="platform:/plugin/org.eclipse.platform" selectedElement="_D34bEhlFEeeZcLa-sysB1g" bindingContexts="_D34bFBlFEeeZcLa-sysB1g">
-  <persistedState key="memento" value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?>&#xA;&lt;workbench>&#xA;&lt;mruList>&#xA;&lt;file factoryID=&quot;org.eclipse.ui.part.FileEditorInputFactory&quot; id=&quot;org.eclipse.jdt.ui.CompilationUnitEditor&quot; name=&quot;MyConfiguration.java&quot; tooltip=&quot;TopSimAll/src/conf/MyConfiguration.java&quot;>&#xA;&lt;persistable path=&quot;/TopSimAll/src/conf/MyConfiguration.java&quot;/>&#xA;&lt;/file>&#xA;&lt;file factoryID=&quot;org.eclipse.ui.part.FileEditorInputFactory&quot; id=&quot;org.eclipse.jdt.ui.CompilationUnitEditor&quot; name=&quot;Print.java&quot; tooltip=&quot;TopSimAll/src/utils/Print.java&quot;>&#xA;&lt;persistable path=&quot;/TopSimAll/src/utils/Print.java&quot;/>&#xA;&lt;/file>&#xA;&lt;file factoryID=&quot;org.eclipse.ui.part.FileEditorInputFactory&quot; id=&quot;org.eclipse.jdt.ui.CompilationUnitEditor&quot; name=&quot;SimRank.java&quot; tooltip=&quot;TopSimAll/src/simrank/SimRank.java&quot;>&#xA;&lt;persistable path=&quot;/TopSimAll/src/simrank/SimRank.java&quot;/>&#xA;&lt;/file>&#xA;&lt;/mruList>&#xA;&lt;/workbench>"/>
+  <persistedState key="memento" value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?>&#xA;&lt;workbench>&#xA;&lt;mruList>&#xA;&lt;file factoryID=&quot;org.eclipse.ui.part.FileEditorInputFactory&quot; id=&quot;org.eclipse.jdt.ui.CompilationUnitEditor&quot; name=&quot;SimRank.java&quot; tooltip=&quot;TopSimAll/src/simrank/SimRank.java&quot;>&#xA;&lt;persistable path=&quot;/TopSimAll/src/simrank/SimRank.java&quot;/>&#xA;&lt;/file>&#xA;&lt;file factoryID=&quot;org.eclipse.ui.part.FileEditorInputFactory&quot; id=&quot;org.eclipse.jdt.ui.CompilationUnitEditor&quot; name=&quot;MyConfiguration.java&quot; tooltip=&quot;TopSimAll/src/conf/MyConfiguration.java&quot;>&#xA;&lt;persistable path=&quot;/TopSimAll/src/conf/MyConfiguration.java&quot;/>&#xA;&lt;/file>&#xA;&lt;file factoryID=&quot;org.eclipse.ui.part.FileEditorInputFactory&quot; id=&quot;org.eclipse.jdt.ui.CompilationUnitEditor&quot; name=&quot;Print.java&quot; tooltip=&quot;TopSimAll/src/utils/Print.java&quot;>&#xA;&lt;persistable path=&quot;/TopSimAll/src/utils/Print.java&quot;/>&#xA;&lt;/file>&#xA;&lt;/mruList>&#xA;&lt;/workbench>"/>
   <tags>activeSchemeId:org.eclipse.ui.defaultAcceleratorConfiguration</tags>
   <tags>ModelMigrationProcessor.001</tags>
   <children xsi:type="basic:TrimmedWindow" xmi:id="_D34bEhlFEeeZcLa-sysB1g" elementId="IDEWindow" contributorURI="platform:/plugin/org.eclipse.platform" selectedElement="_FRrfkhlFEeeZcLa-sysB1g" label="%trimmedwindow.label.eclipseSDK" x="190" y="23" width="1280" height="800">
@@ -9,7 +9,6 @@
     <persistedState key="workingSets" value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?>&#xA;&lt;workingSets/>"/>
     <persistedState key="aggregateWorkingSetId" value="Aggregate for window 1491317016956"/>
     <tags>topLevel</tags>
-    <tags>shellMaximized</tags>
     <children xsi:type="basic:PartSashContainer" xmi:id="_FRrfkhlFEeeZcLa-sysB1g" selectedElement="_FRrfkxlFEeeZcLa-sysB1g" horizontal="true">
       <children xsi:type="advanced:PerspectiveStack" xmi:id="_FRrfkxlFEeeZcLa-sysB1g" elementId="org.eclipse.ui.ide.perspectivestack" containerData="7500" selectedElement="_FZKnoBlFEeeZcLa-sysB1g">
         <children xsi:type="advanced:Perspective" xmi:id="_FZKnoBlFEeeZcLa-sysB1g" elementId="org.eclipse.jdt.ui.JavaPerspective" selectedElement="_FZKnoRlFEeeZcLa-sysB1g" label="Java" iconURI="platform:/plugin/org.eclipse.jdt.ui/icons/full/eview16/jperspective.gif">
@@ -80,7 +79,7 @@
                 <children xsi:type="advanced:Placeholder" xmi:id="_FZKnqhlFEeeZcLa-sysB1g" elementId="org.eclipse.egit.ui.RepositoriesView" toBeRendered="false" ref="_FZJZgBlFEeeZcLa-sysB1g"/>
               </children>
             </children>
-            <children xsi:type="basic:PartSashContainer" xmi:id="_FZKnqxlFEeeZcLa-sysB1g" containerData="7500" selectedElement="_FZKnrBlFEeeZcLa-sysB1g">
+            <children xsi:type="basic:PartSashContainer" xmi:id="_FZKnqxlFEeeZcLa-sysB1g" containerData="7500" selectedElement="_FZKnshlFEeeZcLa-sysB1g">
               <children xsi:type="basic:PartSashContainer" xmi:id="_FZKnrBlFEeeZcLa-sysB1g" containerData="7500" selectedElement="_FZKnrRlFEeeZcLa-sysB1g" horizontal="true">
                 <children xsi:type="advanced:Placeholder" xmi:id="_FZKnrRlFEeeZcLa-sysB1g" elementId="org.eclipse.ui.editorss" containerData="7500" ref="_FY1QcBlFEeeZcLa-sysB1g"/>
                 <children xsi:type="basic:PartStack" xmi:id="_FZKnrhlFEeeZcLa-sysB1g" elementId="right" containerData="2500" selectedElement="_FZKnrxlFEeeZcLa-sysB1g">
@@ -136,7 +135,7 @@
         <tags>EditorStack</tags>
         <tags>active</tags>
         <children xsi:type="basic:Part" xmi:id="_PAHjQB61EeeL_8AlSXD92Q" elementId="org.eclipse.e4.ui.compatibility.editor" contributionURI="bundleclass://org.eclipse.ui.workbench/org.eclipse.ui.internal.e4.compatibility.CompatibilityEditor" label="SimRank.java" iconURI="platform:/plugin/org.eclipse.jdt.ui/icons/full/obj16/jcu_obj.gif" closeable="true">
-          <persistedState key="memento" value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?>&#xA;&lt;editor id=&quot;org.eclipse.jdt.ui.CompilationUnitEditor&quot; name=&quot;SimRank.java&quot; partName=&quot;SimRank.java&quot; title=&quot;SimRank.java&quot; tooltip=&quot;TopSimAll/src/simrank/SimRank.java&quot;>&#xA;&lt;input factoryID=&quot;org.eclipse.ui.part.FileEditorInputFactory&quot; path=&quot;/TopSimAll/src/simrank/SimRank.java&quot;/>&#xA;&lt;editorState selectionHorizontalPixel=&quot;0&quot; selectionLength=&quot;0&quot; selectionOffset=&quot;236&quot; selectionTopPixel=&quot;0&quot;/>&#xA;&lt;/editor>"/>
+          <persistedState key="memento" value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?>&#xA;&lt;editor id=&quot;org.eclipse.jdt.ui.CompilationUnitEditor&quot; name=&quot;SimRank.java&quot; partName=&quot;SimRank.java&quot; title=&quot;SimRank.java&quot; tooltip=&quot;TopSimAll/src/simrank/SimRank.java&quot;>&#xA;&lt;input factoryID=&quot;org.eclipse.ui.part.FileEditorInputFactory&quot; path=&quot;/TopSimAll/src/simrank/SimRank.java&quot;/>&#xA;&lt;editorState selectionHorizontalPixel=&quot;0&quot; selectionLength=&quot;0&quot; selectionOffset=&quot;411&quot; selectionTopPixel=&quot;0&quot;/>&#xA;&lt;/editor>"/>
           <tags>Editor</tags>
           <tags>org.eclipse.jdt.ui.CompilationUnitEditor</tags>
           <tags>removeOnHide</tags>
@@ -252,7 +251,7 @@
       </children>
       <children xsi:type="menu:ToolBar" xmi:id="_FTLUYBlFEeeZcLa-sysB1g" elementId="org.eclipse.ui.workbench.file">
         <tags>Draggable</tags>
-        <children xsi:type="menu:HandledToolItem" xmi:id="_2KhKUB9yEee8PPLTAdYr9Q" elementId="print" iconURI="platform:/plugin/org.eclipse.ui/icons/full/etool16/print_edit.png" tooltip="Print" enabled="false" command="_D4pQIRlFEeeZcLa-sysB1g"/>
+        <children xsi:type="menu:HandledToolItem" xmi:id="_w0PXECHAEeeZmPRYpG5cPw" elementId="print" iconURI="platform:/plugin/org.eclipse.ui/icons/full/etool16/print_edit.png" tooltip="Print" enabled="false" command="_D4pQIRlFEeeZcLa-sysB1g"/>
       </children>
       <children xsi:type="menu:ToolBar" xmi:id="_FTLUYRlFEeeZcLa-sysB1g" elementId="additions" toBeRendered="false">
         <tags>toolbarSeparator</tags>
@@ -276,7 +275,7 @@
       </children>
       <children xsi:type="menu:ToolBar" xmi:id="_FTMigBlFEeeZcLa-sysB1g" elementId="org.eclipse.ui.workbench.navigate">
         <tags>Draggable</tags>
-        <children xsi:type="menu:HandledToolItem" xmi:id="_2Kn4AB9yEee8PPLTAdYr9Q" elementId="org.eclipse.ui.window.pinEditor" visible="false" iconURI="platform:/plugin/org.eclipse.ui/icons/full/etool16/pin_editor.png" tooltip="Pin Editor" type="Check" command="_D4na8RlFEeeZcLa-sysB1g"/>
+        <children xsi:type="menu:HandledToolItem" xmi:id="_w0X58CHAEeeZmPRYpG5cPw" elementId="org.eclipse.ui.window.pinEditor" visible="false" iconURI="platform:/plugin/org.eclipse.ui/icons/full/etool16/pin_editor.png" tooltip="Pin Editor" type="Check" command="_D4na8RlFEeeZcLa-sysB1g"/>
       </children>
       <children xsi:type="menu:ToolBar" xmi:id="_FTMigRlFEeeZcLa-sysB1g" elementId="group.editor" toBeRendered="false">
         <tags>toolbarSeparator</tags>
@@ -669,7 +668,7 @@
       <tags>platform:cocoa</tags>
       <parameters xmi:id="_D5pVpBlFEeeZcLa-sysB1g" elementId="org.eclipse.ui.views.showView.viewId" name="org.eclipse.ui.views.showView.viewId" value="org.eclipse.debug.ui.VariableView"/>
     </bindings>
-    <bindings xmi:id="_1wBmsR9yEee8PPLTAdYr9Q" keySequence="COMMAND+CTRL+F" command="_D54mMxlFEeeZcLa-sysB1g"/>
+    <bindings xmi:id="_wVsZ4SHAEeeZmPRYpG5cPw" keySequence="COMMAND+CTRL+F" command="_D54mMxlFEeeZcLa-sysB1g"/>
   </bindingTables>
   <bindingTables xmi:id="_D5VzoRlFEeeZcLa-sysB1g" elementId="org.eclipse.jdt.ui.javaEditorScope" bindingContext="_D4wk2RlFEeeZcLa-sysB1g">
     <bindings xmi:id="_D5VzohlFEeeZcLa-sysB1g" keySequence="COMMAND+SHIFT+C" command="_D4jwghlFEeeZcLa-sysB1g"/>
@@ -783,7 +782,7 @@
     <bindings xmi:id="_D5eWgxlFEeeZcLa-sysB1g" keySequence="ALT+CR" command="_D4iiZxlFEeeZcLa-sysB1g"/>
   </bindingTables>
   <bindingTables xmi:id="_D55NRhlFEeeZcLa-sysB1g" contributorURI="platform:/fragment/org.eclipse.e4.ui.workbench.renderers.swt.cocoa" bindingContext="_D34bFxlFEeeZcLa-sysB1g">
-    <bindings xmi:id="_1wCNwB9yEee8PPLTAdYr9Q" keySequence="M1+W" command="_D55NRBlFEeeZcLa-sysB1g"/>
+    <bindings xmi:id="_wVtA8CHAEeeZmPRYpG5cPw" keySequence="M1+W" command="_D55NRBlFEeeZcLa-sysB1g"/>
   </bindingTables>
   <bindingTables xmi:id="_FY2ekRlFEeeZcLa-sysB1g" bindingContext="_FY2ekBlFEeeZcLa-sysB1g"/>
   <bindingTables xmi:id="_FY3FoRlFEeeZcLa-sysB1g" bindingContext="_FY3FoBlFEeeZcLa-sysB1g"/>

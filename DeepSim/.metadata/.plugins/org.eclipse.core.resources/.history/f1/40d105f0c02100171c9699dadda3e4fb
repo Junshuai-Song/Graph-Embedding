@@ -13,7 +13,7 @@ import utils.Print;
  *
  */
 public class SimRank {
-	private int STEP = 3;	
+	private int STEP = 5;	
 	private int COUNT;
 	private Graph g;
 	private double[][]sim, tempSim;
